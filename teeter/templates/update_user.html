@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% comment %} update_user.html {% endcomment %}
+{% block content %}
+    <div class="col-md-6 offset-md-3">
+        <h1>Update Profile</h1><br/><br/>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            <br/>
+            {{ profile_form.as_p }}
+            <br/>
+            <button type="submit" class="btn btn-secondary">Update</button>
+        </form>
+    </div>
+{% endblock %}

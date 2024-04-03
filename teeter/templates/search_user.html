@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>Search Users</h1>
+<br/><br/>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="input" class="form-control" placeholder="Username" name="search">
+    <br/><br/>
+    <button type="submit" class="btn btn-secondary">Search User!</button>
+</form>
+<br/><br/>
+{% if search %}
+
+<h3>You Searched For: {{ search }}</h3>
+
+<br/><br/>
+
+{% if searched %}
+    {% for result in searched %}
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if result.profile.profile_image %}
+                        <img src="{{ result.profile.profile_image.url }}" width=200 height=200 class="img-fluid reounded-start" alt="{{ result.profile.user.username }}">
+                    {% else %}
+                        <img src="{% static 'images/profile-icon.jpeg' %}" class="img-fluid rounded-start" alt="Profile Image">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ profile.user.first_name }} {{ profile.user.last_name }}</h5>
+                    <p class="card-text"><a href="{% url 'profile' result.profile.user.id %}">@{{ result.profile.user.username|lower }}</a></p>
+                    <br/><br/>
+                    <p class="card-text"><small class="text-body-secondary">Last Updated: {{ result.profile.date_modified }}</small></p>
+                </div>
+                </div>
+            </div>
+        </div>
+        <br/><br/>
+    {% endfor %}
+{% else %}
+        <h4>Sorry, No results Found of {{ search }}. Please try again with a different username.</h4><br/>
+    {% comment %} This is when the user doesn't enter anything into the field and submits it.
+        {% if searched == None %}
+            <h4>Sorry, No results Found of {{ search }}. Please try again with a different username.</h4><br/>
+        {% endif %} 
+    {% endcomment %}
+{% endif %}
+
+<br/>
+
+{% endif %}
+
+<br/>
+{% endblock %}

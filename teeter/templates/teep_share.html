@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% comment %} teep_share.html {% endcomment %}
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-8">
+        <h1>Teeps</h1>
+          <div class="alert alert-dark" role="alert">
+            <div class="container">
+              <div class="row">
+                <div class="col-1">
+                  {% if teep.user.profile.profile_image %}
+                    <img src="{{ teep.user.profile.profile_image.url }}" width=50 height=50 class="rounded-circle" alt="{{ profile.user.username }}">
+                  {% else %}
+                    <img src="{% static 'images/profile-icon.jpeg' %}" width=50 height=50 class="rounded-circle" alt="{{ profile.user.username }}">
+                  {% endif %}
+                </div>
+                <div class="col-11">
+                  {{ teep.body }}<br/>
+                  <small class="text-muted">
+                    {{ teep.created_at }} By @{{ teep.user.username }}
+                    - {{ teep.number_of_likes }} Likes - 
+                    
+                    {% if user in teep.likes.all %}
+                    <a href="{% url 'teep_like' teep.id %}">
+                      <i class="fa-solid fa-heart" style="color:red"></i>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'teep_like' teep.id %}">
+                      <i class="fa fa-heart-o" style="color:red"></i>
+                    </a>
+                    {% endif %}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/><br/>
+      </div>
+  <div class="col-4">
+    <br/><br/>
+  </div>
+
+{% endblock %}

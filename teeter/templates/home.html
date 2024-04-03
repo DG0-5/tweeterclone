@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="container text-center">
+    <div class="row">
+      <div class="col-8">
+
+        <h1>Teeps</h1>
+        
+        {% for teep in teeps %}
+        
+          <div class="alert alert-dark" role="alert">
+            <div class="container">
+              <div class="row">
+                <div class="col-1">
+                  
+                  {% if teep.user.profile.profile_image %}
+                      <img src="{{ teep.user.profile.profile_image.url }}" width=50 height=50 class="rounded-circle" alt="{{ profile.user.username }}">
+                  
+                  {% else %}
+                      <img src="{% static 'images/profile-icon.jpeg' %}" width=50 height=50 class="rounded-circle" alt="{{ profile.user.username }}">
+                  
+                  {% endif %}
+                </div>
+                
+                <div class="col-11">
+                  {{ teep.body }}<br/>
+                  <small class="text-muted">
+                    {{ teep.created_at }} By&nbsp;<a href="{% url 'profile' teep.user.profile.user.id %}">@{{ teep.user.username }}</a>&nbsp;&nbsp;
+                    {% if user in teep.likes.all %}
+                    <a href="{% url 'teep_like' teep.id %}">
+                      <i class="fa-solid fa-heart" style="color:red"></i></a>
+                    {% else %}
+                    <a href="{% url 'teep_like' teep.id %}">
+                      <i class="fa fa-heart-o" style="color:red"></i></a>
+                    {% endif %}
+                    {{ teep.number_of_likes }}
+                    &nbsp;
+                    <a href="{% url 'teep_share' teep.id %}">
+                      <i class="fa-solid fa-share" style="color:gray"></i></a>
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br/><br/>
+        {% endfor %}
+      </div>
+  <div class="col-4">
+    <br/><br/>
+    {% if form %}
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-secondary">Post Teep!</button>
+    </form>
+    {% endif %}
+  </div>
+
+{% endblock %}
